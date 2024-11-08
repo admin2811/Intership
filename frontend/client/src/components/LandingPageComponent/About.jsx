@@ -1,16 +1,16 @@
 import React from 'react'
-import about from '../../assets/About.png'
-import icon4 from '../../assets/Icons/Icon4.png'
-import icon3 from '../../assets/Icons/Icon3.png'
-import icon5 from '../../assets/Icons/Icon5.png'
-import icon6 from '../../assets/Icons/Icon6.png'
+//import about from '../../assets/About.png'
+//import icon4 from '../../assets/Icons/Icon4.png'
+//import icon3 from '../../assets/Icons/Icon3.png'
+//import icon5 from '../../assets/Icons/Icon5.png'
+//import icon6 from '../../assets/Icons/Icon6.png'
 const About = () => {
   return (
     <div id='about'>
        <div className='px-4 lg:px-14 max-w-screen-2xl mx-auto my-8'>
             <div className='md:w-11/12 mx-auto flex flex-col md:flex-row justify-between items-center gap-20'>
                 <div>
-                    <img src={about} alt= ''/>
+                    <img src="../../assets/About.png" alt= ''/>
                 </div>
                 <div className='md:w-3/5 mx-auto'>
                     <h2 className='text-4xl text-neutralDGrey font-semibold mb-4 md:w-4/5'>The unseen of spending three years at Pixelgrade</h2>
@@ -40,14 +40,14 @@ const About = () => {
                 <div className='md:w-1/2 mx-auto flex sm:flex-row flex-col sm:items-center justify-around gap-12'>
                     <div className='space-y-8'>
                         <div className='flex items-center gap-4'>
-                            <img src={icon4} alt=''/>
+                            <img src='../../assets/Icons/Icon4.png' alt=''/>
                             <div>
                                 <h4 className='text-2xl font-semibold text-neutralDGrey mb-2'>2,245,341</h4>
                                 <p className='text-sm text-neutralDGrey'>Membership</p>
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            <img src={icon5} alt=''/>
+                            <img src='../../assets/Icons/Icon3.png' alt=''/>
                             <div>
                                 <h4 className='text-2xl font-semibold text-neutralDGrey mb-2'>46,328</h4>
                                 <p className='text-sm text-neutralDGrey'>Clubs</p>
@@ -56,14 +56,14 @@ const About = () => {
                     </div>
                     <div className='space-y-8'>
                         <div className='flex items-center gap-4'>
-                            <img src={icon3} alt=''/>
+                            <img src='../../assets/Icons/Icon3.png' alt=''/>
                             <div>
                                 <h4 className='text-2xl font-semibold text-neutralDGrey mb-2'>828,867</h4>
                                 <p className='text-sm text-neutralDGrey'>Event Bookings</p>
                             </div>
                         </div>
                         <div className='flex items-center gap-4'>
-                            <img src={icon6} alt=''/>
+                            <img src='../../assets/Icons/Icon6.png' alt=''/>
                             <div>
                                 <h4 className='text-2xl font-semibold text-neutralDGrey mb-2'>1,926,436</h4>
                                 <p className='text-sm text-neutralDGrey'>Payments</p>

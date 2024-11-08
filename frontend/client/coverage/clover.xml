@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1731048865952" clover="3.2.0">
-  <project timestamp="1731048865952" name="All files">
-    <metrics statements="451" coveredstatements="0" conditionals="227" coveredconditionals="0" methods="162" coveredmethods="0" elements="840" coveredelements="0" complexity="0" loc="451" ncloc="451" packages="16" files="49" classes="49"/>
+<coverage generated="1731057605973" clover="3.2.0">
+  <project timestamp="1731057605973" name="All files">
+    <metrics statements="453" coveredstatements="2" conditionals="227" coveredconditionals="0" methods="163" coveredmethods="1" elements="843" coveredelements="3" complexity="0" loc="453" ncloc="453" packages="17" files="50" classes="50"/>
     <package name="src">
       <metrics statements="8" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
       <file name="App.jsx" path="D:\Intership\Project\frontend\client\src\App.jsx">
@@ -17,6 +17,14 @@
       <file name="main.jsx" path="D:\Intership\Project\frontend\client\src\main.jsx">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="7" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.components">
+      <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <file name="Logo.jsx" path="D:\Intership\Project\frontend\client\src\components\Logo.jsx">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
       </file>
     </package>
     <package name="src.components.DashBoard.applications">
@@ -428,29 +436,29 @@
       </file>
       <file name="Signup.jsx" path="D:\Intership\Project\frontend\client\src\pages\Auth\Signup.jsx">
         <metrics statements="23" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="8" coveredmethods="0"/>
+        <line num="12" count="0" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
-        <line num="14" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
         <line num="20" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
-        <line num="22" count="0" type="stmt"/>
-        <line num="24" count="0" type="stmt"/>
-        <line num="26" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
         <line num="69" count="0" type="stmt"/>
         <line num="70" count="0" type="stmt"/>
-        <line num="71" count="0" type="stmt"/>
-        <line num="77" count="0" type="stmt"/>
-        <line num="80" count="0" type="stmt"/>
-        <line num="81" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="82" count="0" type="stmt"/>
-        <line num="83" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="82" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="83" count="0" type="stmt"/>
         <line num="84" count="0" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
-        <line num="86" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
         <line num="92" count="0" type="stmt"/>
-        <line num="93" count="0" type="stmt"/>
-        <line num="99" count="0" type="stmt"/>
-        <line num="122" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
       </file>
     </package>
     <package name="src.pages.DashBoard">

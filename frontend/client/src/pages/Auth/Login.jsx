@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import "../../css/Login.css" 
-import 'boxicons/css/boxicons.min.css';
-import rom1 from '../../assets/room.gif';
-import rom2 from '../../assets/room.jpeg';
+//import rom1 from '../../assets/room.gif';
+//import rom2 from '../../assets/room.jpeg';
 import { Link, useNavigate} from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import FormInput from './FormInput';
@@ -10,6 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { login, reset } from '../../redux/auth/authSlice';
 import 'react-toastify/dist/ReactToastify.css';
+import 'boxicons/css/boxicons.min.css';
+import "../../css/Login.css"; 
 const Login = () => {
   const [values, setValues] = useState({
     username: "",
@@ -154,8 +154,8 @@ const Login = () => {
           </div>
         </div>
         <div className='relative w-full max-w-[600px] grid place-items-center'>
-           <img  src={rom2} alt ="Gif" className='absolute rounded-2xl hidden md:block'/>
-           <img  src={rom1} alt="JPEG" className='absolute rounded-2xl animImg hidden md:block'/>
+           <img  src="../../assets/room.jpeg" alt ="Gif" className='absolute rounded-2xl hidden md:block'/>
+           <img  src="../../assets/room.gif" alt="JPEG" className='absolute rounded-2xl animImg hidden md:block'/>
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Footer } from "flowbite-react";
 import { BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitter } from "react-icons/bs";
-import Logo from '../../assets/Logo.png'
+//import Logo from '../../assets/Logo.png'
 const MyFooter = () => {
   return (
     <div>
@@ -10,7 +10,7 @@ const MyFooter = () => {
         <div className="grid w-full justify-between sm:flex sm:justify-between md:flex md:grid-cols-1">
           <div className='space-y-4 mb-8'>
                <a href="#" className='h-8 transition-transform duration-300 hover:scale-10'>
-                    <img src={Logo} alt="Logo" className=''/>
+                    <img src='../../assets/Logo.png' alt="Logo" className=''/>
                 </a>
           <div>
             <p className='mb-1'>Copyright © 2020 Nexcent ltd.</p>
