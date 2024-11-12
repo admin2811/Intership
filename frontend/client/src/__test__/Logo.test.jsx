@@ -8,6 +8,5 @@ describe('Logo Component', () => {
     // Check if the image is rendered with the correct alt text
     const logoImage = screen.getByAltText(/logo/i);
     expect(logoImage).toBeInTheDocument();
-
     });
 }); 

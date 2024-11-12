@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-//import rom1 from '../../assets/room.gif';
-//import rom2 from '../../assets/room.jpeg';
+import rom1 from '../../assets/room.gif';
+import rom2 from '../../assets/room.jpeg';
 import { Link, useNavigate} from 'react-router-dom';
 import Loading from '../Loading/Loading';
 import FormInput from './FormInput';
@@ -24,18 +24,18 @@ const Login = () => {
   const { isSuccess, isLogoutSuccess, isError, message } = useSelector(
     (state) => state.auth
   );
-
   useEffect(() => {
     if (isError) {
       toast.error(message);
     } else if (isSuccess) {
       toast.success("User Login Successful");
-      const timer = setTimeout(() => {
+      //const timer =
+       setTimeout(() => {
         localStorage.setItem('username',username);
         navigate("/dashboard", {replace: true});
       }, 2000);
-      return () => clearTimeout(timer);
-
+      clearTimeout();
+      //return () => clearTimeout(timer);
     } else if (isLogoutSuccess) {
       toast.success("User Logout Successful");
       //đổi màu nền thành màu trắn
@@ -50,7 +50,9 @@ const Login = () => {
     setTimeout(() => {
       navigate(path);
     }, 2000);
+    return () => clearTimeout()
   };
+
   const handleSignUpClick = handleNavigationClick('/signup');
   const handleForgotPasswordClick = handleNavigationClick('/forgotPassword');
   const handleBackClick = handleNavigationClick('/');
@@ -154,8 +156,8 @@ const Login = () => {
           </div>
         </div>
         <div className='relative w-full max-w-[600px] grid place-items-center'>
-           <img  src="../../assets/room.jpeg" alt ="Gif" className='absolute rounded-2xl hidden md:block'/>
-           <img  src="../../assets/room.gif" alt="JPEG" className='absolute rounded-2xl animImg hidden md:block'/>
+           <img  src={rom1} alt ="Gif" className='absolute rounded-2xl hidden md:block'/>
+           <img  src={rom2} alt="JPEG" className='absolute rounded-2xl animImg hidden md:block'/>
         </div>
       </div>
 

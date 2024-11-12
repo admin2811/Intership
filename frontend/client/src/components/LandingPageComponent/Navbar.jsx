@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-//import Logo from '../../assets/Logo.png';
+import Logo from '../../assets/Logo.png';
 import { Link as ScrollLink} from 'react-scroll';
 import { Link } from 'react-router-dom';
 import { FaXmark, FaBars } from 'react-icons/fa6';
@@ -38,7 +38,7 @@ const Navbar = () => {
         <nav className={`py-4 lg:px-14 px-4 ${isSticky ? "sticky top-0 left-0 right-0 border bg-white duration-300" : ""}`}>
             <div className='flex justify-between items-center text-base gap-8'>
                 <a href="#" className='h-8 transition-transform duration-300 hover:scale-10'>
-                    <img src="../../assets/Logo.png" alt="Logo" className=''/>
+                    <img src={Logo} alt="Logo" className=''/>
                 </a>
 
                 {/*Mobile Menu*/}

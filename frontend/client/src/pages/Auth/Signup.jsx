@@ -1,6 +1,6 @@
 import React, { useEffect,useState } from 'react';
-//import rom1 from '../../assets/room.gif';
-//import rom2 from '../../assets/room.jpeg';
+import rom1 from '../../assets/room.gif';
+import rom2 from '../../assets/room.jpeg';
 import { Link, useNavigate } from 'react-router-dom';
 import FormInput from './FormInput';
 import {ToastContainer, toast } from 'react-toastify';
@@ -136,8 +136,8 @@ const Signup = () => {
         </div>
 
         <div className='relative w-full max-w-[600px] grid place-items-center'>
-           <img  src="../../assets/room.jpeg" alt ="Gif" className='absolute rounded-2xl hidden md:block'/>
-           <img  src="../../assets/room.gif" alt="JPEG" className='absolute rounded-2xl animImg hidden md:block'/>
+           <img  src={rom1} alt ="Gif" className='absolute rounded-2xl hidden md:block'/>
+           <img  src={rom2} alt="JPEG" className='absolute rounded-2xl animImg hidden md:block'/>
         </div>
       </div>
     </div>

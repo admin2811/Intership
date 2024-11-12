@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1731057605973" clover="3.2.0">
-  <project timestamp="1731057605973" name="All files">
-    <metrics statements="453" coveredstatements="2" conditionals="227" coveredconditionals="0" methods="163" coveredmethods="1" elements="843" coveredelements="3" complexity="0" loc="453" ncloc="453" packages="17" files="50" classes="50"/>
+<coverage generated="1731388159204" clover="3.2.0">
+  <project timestamp="1731388159204" name="All files">
+    <metrics statements="454" coveredstatements="2" conditionals="227" coveredconditionals="0" methods="163" coveredmethods="1" elements="844" coveredelements="3" complexity="0" loc="454" ncloc="454" packages="17" files="50" classes="50"/>
     <package name="src">
       <metrics statements="8" coveredstatements="0" conditionals="2" coveredconditionals="0" methods="3" coveredmethods="0"/>
       <file name="App.jsx" path="D:\Intership\Project\frontend\client\src\App.jsx">
@@ -322,7 +322,7 @@
       </file>
     </package>
     <package name="src.pages.Auth">
-      <metrics statements="119" coveredstatements="0" conditionals="24" coveredconditionals="0" methods="39" coveredmethods="0"/>
+      <metrics statements="120" coveredstatements="0" conditionals="24" coveredconditionals="0" methods="39" coveredmethods="0"/>
       <file name="ForgotPassword.jsx" path="D:\Intership\Project\frontend\client\src\pages\Auth\ForgotPassword.jsx">
         <metrics statements="20" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="7" coveredmethods="0"/>
         <line num="7" count="0" type="stmt"/>
@@ -355,7 +355,7 @@
         <line num="8" count="0" type="stmt"/>
       </file>
       <file name="Login.jsx" path="D:\Intership\Project\frontend\client\src\pages\Auth\Login.jsx">
-        <metrics statements="41" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="12" coveredmethods="0"/>
+        <metrics statements="42" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="12" coveredmethods="0"/>
         <line num="13" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="18" count="0" type="stmt"/>
@@ -365,11 +365,11 @@
         <line num="22" count="0" type="stmt"/>
         <line num="24" count="0" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="28" count="0" type="stmt"/>
-        <line num="29" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="30" count="0" type="stmt"/>
-        <line num="31" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="32" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="31" count="0" type="stmt"/>
         <line num="33" count="0" type="stmt"/>
         <line num="34" count="0" type="stmt"/>
         <line num="35" count="0" type="stmt"/>
@@ -383,20 +383,21 @@
         <line num="49" count="0" type="stmt"/>
         <line num="50" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
-        <line num="54" count="0" type="stmt"/>
-        <line num="55" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
         <line num="56" count="0" type="stmt"/>
-        <line num="59" count="0" type="cond" truecount="0" falsecount="2"/>
-        <line num="60" count="0" type="stmt"/>
-        <line num="67" count="0" type="stmt"/>
-        <line num="89" count="0" type="stmt"/>
-        <line num="90" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="61" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
         <line num="91" count="0" type="stmt"/>
-        <line num="95" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
         <line num="97" count="0" type="stmt"/>
-        <line num="98" count="0" type="stmt"/>
-        <line num="103" count="0" type="stmt"/>
-        <line num="127" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="129" count="0" type="stmt"/>
       </file>
       <file name="PrivateRoute.jsx" path="D:\Intership\Project\frontend\client\src\pages\Auth\PrivateRoute.jsx">
         <metrics statements="6" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="2" coveredmethods="0"/>
