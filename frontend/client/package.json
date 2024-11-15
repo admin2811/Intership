@@ -34,6 +34,7 @@
     "react-toastify": "^10.0.5",
     "recharts": "^2.12.7",
     "redux-mock-store": "^1.5.5",
+    "safe-buffer": "^5.2.1",
     "supertest": "^7.0.0"
   },
   "devDependencies": {
@@ -59,6 +60,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.12",
+    "video.js": "^8.19.1",
     "vite": "^5.4.1"
   }
 }

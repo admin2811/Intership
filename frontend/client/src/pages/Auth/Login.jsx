@@ -33,8 +33,9 @@ const Login = () => {
        setTimeout(() => {
         localStorage.setItem('username',username);
         navigate("/dashboard", {replace: true});
+        window.location.reload();
       }, 2000);
-      clearTimeout();
+      clearTimeout(); 
       //return () => clearTimeout(timer);
     } else if (isLogoutSuccess) {
       toast.success("User Logout Successful");
@@ -76,7 +77,6 @@ const Login = () => {
       pattern: "^[\\w\\s]{3,}$",
       errormessage: "Invalid Username",
     },
-
     {
       id: 2,
       name: "password",

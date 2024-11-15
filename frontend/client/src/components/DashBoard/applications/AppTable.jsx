@@ -1,10 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion';
-import { Search ,Camera,Play, Pen , AlignJustify} from 'lucide-react';
+import { Search ,Camera,Play, Pen , AlignJustify, Eye} from 'lucide-react';
+import FormApp from './FormApp';
 const AppTable = ({isDarkMode}) => {
   const  data = [
     {id: 1,name: "test",streamkey: '11111',status : "online", viewer: 1 }
   ]
+  const [addSection, setAddSection] = useState(false);
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+        if (e.key === "Escape") {
+            setAddSection(false);
+        }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+        window.removeEventListener("keydown", handleKeyDown);
+    };
+  },[])
   const [menu, setMenu] = useState(false);
   return (
     <div className="relative">
@@ -26,7 +39,7 @@ const AppTable = ({isDarkMode}) => {
 						<Search className={`${isDarkMode ? 'absolute left-3 top-2.5 text-gray-400' : 'absolute left-3 top-2.5 text-black'}`} size={18} />
             		<button
 						className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 mr-5'
-					>
+						onClick={() => setAddSection(true)}>
 						Add +
 					</button>
           </div>
@@ -92,6 +105,7 @@ const AppTable = ({isDarkMode}) => {
 										<button className={`${isDarkMode ? '' : 'text-black'}`} onClick={() => setMenu(!menu)}>
 											<AlignJustify />
 										</button>
+										<button className = 'text-green-400 hover:text-green-300'><Eye/></button>
 									</td>
 								</motion.tr>
 								);
@@ -118,6 +132,9 @@ const AppTable = ({isDarkMode}) => {
 				  <li className='py-2 px-4 hover:bg-gray-200 cursor-pointer'>Delete Broadcast</li>
                 </ul>
             </motion.div> 
+			)}
+			{addSection && (
+				<FormApp isDarkMode={isDarkMode} />
 			)}
 		</div>
   )
