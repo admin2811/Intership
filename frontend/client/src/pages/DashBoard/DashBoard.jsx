@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
+import React, {useEffect } from 'react'
 import SideBar from '../../components/DashBoard/common/SideBar';
 import { Outlet } from 'react-router-dom';
 import { useTheme } from '../../components/DashBoard/common/ThemeContext';
 const Dashboard = () => {
   const [isDarkMode, setIsDarkMode] = useTheme();
+  const user = localStorage.getItem('user');
+  console.log(user)
   useEffect(() => {
-    // Đặt class cho body dựa trên chế độ
     localStorage.setItem('isDarkMode', isDarkMode);
     document.body.className = isDarkMode ? 'bg-gray-900 text-gray-100' : 'bg-white text-black';
   }, [isDarkMode]);
-
   return (
     <div className='flex h-screen overflow-hidden'>
           {/* BG */}

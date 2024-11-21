@@ -3,19 +3,60 @@ import axios from "axios";
 const API_URL = 'http://localhost:5000/api/streams';
 
 export const createStream = async (streamData) => {
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    };
     try {
-        // Thực hiện yêu cầu POST với axios
-        const response = await axios.post(API_URL, streamData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        return response.data;
+        const response = await axios.post(`${API_URL}/create`, streamData, config);
+        return response.data; // Trả về toàn bộ dữ liệu từ server
     } catch (error) {
-        if (error.response) {
-            throw new Error(`Error: ${error.response.data.message || 'Something went wrong'}`);
+        // Nếu có lỗi, kiểm tra và trả về lỗi từ server
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data.message || 'An error occurred');
         } else {
-            throw new Error('Network error or server is unreachable');
+            throw new Error('Unable to connect to the server');
         }
     }
 };
+
+export const startStream = async (startStreamData) => {
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    };
+    try{
+        const response = await axios.post(`${API_URL}/watch_stream`, startStreamData, config)
+        return response.data
+    }catch(error){
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data.message || 'An error occurred');
+        } else {
+            throw new Error('Unable to connect to the server');
+        }
+    }
+}
+
+export const getStreamsByUser = async (userId) => { 
+    try {
+        const response = await axios.get(`${API_URL}/user_streams/${userId}`);
+        return response.data;
+    } catch (error) {
+        if (error.response?.data) {
+            throw new Error(error.response.data.message || 'An error occurred');
+        } else {
+            throw new Error('Unable to connect to the server');
+        }
+    }
+}
+
+
+
+const streamService = {
+    createStream,
+    getStreamsByUser,
+    startStream
+};
+export default streamService;

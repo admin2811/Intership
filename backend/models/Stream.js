@@ -1,37 +1,24 @@
 const mongoose = require('mongoose');
 
 const StreamSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },  
   name: {
     type: String,
-    required: true,
-  },
-  server: {
-    type: String,
-    required: true,
-  },
-  status: {
-    type: String,
-    enum: ['online', 'offline'],
-    default: 'online'
-  },
-  type: {
-    type: String,
-    enum: ['media source', 'display capture'],
     required: true,
   },
   key: {
     type: String,
     required: true,
   },
-  videoSrc: {
+  videoUrl: {
     type: String,
-    required: true,
-  },
-  viewer: {
-    type: Number,
-    default: 0,
-  }
-  
+    required: true 
+  }, 
+  createdAt: { type: Date, default: Date.now },
 },{
   timestamps: true,
 });

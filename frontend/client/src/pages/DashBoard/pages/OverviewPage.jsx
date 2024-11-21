@@ -6,7 +6,6 @@ import { Cpu, Database, MonitorCheck, Server, MemoryStick } from "lucide-react";
 import ChartCard from '../../../components/DashBoard/overview/ChartCard';
 import OverviewTable from '../../../components/DashBoard/overview/OverviewTable';
 import { useOutletContext } from 'react-router-dom';
-
 const OverviewPage = () => {
   const { isDarkMode, setIsDarkMode } = useOutletContext(); // Lấy context từ Outlet
   return (

@@ -21,25 +21,25 @@ const Login = () => {
   const dispatch = useDispatch();
   const [isLoading , setIsLoading] = useState(false);
 
-  const { isSuccess, isLogoutSuccess, isError, message } = useSelector(
+  const { isSuccess, isLogoutSuccess, isError, message} = useSelector(
     (state) => state.auth
   );
+  const user = useSelector((state) => state.auth.user);
+  console.log(user)
   useEffect(() => {
     if (isError) {
       toast.error(message);
     } else if (isSuccess) {
-      toast.success("User Login Successful");
-      //const timer =
+      toast.success("User Login Successful"); 
        setTimeout(() => {
         localStorage.setItem('username',username);
+        localStorage.setItem('user',JSON.stringify(user))
         navigate("/dashboard", {replace: true});
         window.location.reload();
       }, 2000);
       clearTimeout(); 
-      //return () => clearTimeout(timer);
     } else if (isLogoutSuccess) {
       toast.success("User Logout Successful");
-      //đổi màu nền thành màu trắn
       setBackground('white');
     }
     dispatch(reset());
@@ -57,8 +57,6 @@ const Login = () => {
   const handleSignUpClick = handleNavigationClick('/signup');
   const handleForgotPasswordClick = handleNavigationClick('/forgotPassword');
   const handleBackClick = handleNavigationClick('/');
-
-
   if(isLoading) {
     return (
       <div className='flex justify-center items-center h-screen'>

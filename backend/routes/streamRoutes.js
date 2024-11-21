@@ -1,7 +1,16 @@
-const express = require('express');
+const express = require("express");
+const multer = require('multer')
+const { createStream, getAllStreamByUser } = require("../controllers/streamController");
 const router = express.Router();
-const { upload, uploadVideo } = require('../controllers/streamController');
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-router.post('/start-streams', upload.single('video'), uploadVideo);
+router.post("/create", (req, res, next) => {
+    console.log("File:", req.file); // Log file nhận được
+    console.log("Body:", req.body); // Log body
+    next();
+  }, upload.single('video'), createStream);
 
-module.exports = router;
+router.get("/user_streams/:userId", getAllStreamByUser)
+
+module.exports = router

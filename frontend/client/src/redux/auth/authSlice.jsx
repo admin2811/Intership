@@ -3,6 +3,7 @@ import authService from "./authServices";
 
 const initialState = {
   authToken: null,
+  user: null,
   isLoading: false,
   isSuccess: false,
   isLogoutSuccess: false,
@@ -107,9 +108,12 @@ export const authSlice = createSlice({
     });
 
     builder.addCase(login.fulfilled, (state, action) => {
+      console.log("Payload received:", action.payload);
       state.isLoading = false;
       state.isSuccess = true;
       state.authToken = action.payload.token;
+      state.user = action.payload.user;
+      console.log("User:", state.user);
     });
 
     builder.addCase(login.rejected, (state, action) => {

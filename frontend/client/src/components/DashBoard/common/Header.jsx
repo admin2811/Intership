@@ -15,6 +15,7 @@ const Header = ({ title, isDarkMode}) => {
   const logoutHandler = () => {
     dispatch(logoutUser());
     localStorage.removeItem('authToken');
+    localStorage.removeItem('user');
     navigate('/login');
   } 
   const handleLogout = () => {

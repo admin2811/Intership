@@ -149,9 +149,11 @@ const resetPassword = async (req, res, next) => {
 
 const generateToken = (user, statusCode, res) => {
   const token = user.getSignedToken();
+  const { _id, username, email } = user;
   return res.status(statusCode).json({
     success: true,
     token,
+    user: { _id, username, email },
   });
 };
 
