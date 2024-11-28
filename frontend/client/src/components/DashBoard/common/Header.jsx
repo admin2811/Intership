@@ -16,6 +16,8 @@ const Header = ({ title, isDarkMode}) => {
     dispatch(logoutUser());
     localStorage.removeItem('authToken');
     localStorage.removeItem('user');
+    // localStorage.removeItem('activeStreams')
+    // localStorage.removeItem('streamStatus');
     navigate('/login');
   } 
   const handleLogout = () => {

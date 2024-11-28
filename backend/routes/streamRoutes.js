@@ -1,6 +1,6 @@
 const express = require("express");
 const multer = require('multer')
-const { createStream, getAllStreamByUser } = require("../controllers/streamController");
+const { createStream, getAllStreamByUser, startStream, getStreamStatus , getStreamInfomation, sseStream } = require("../controllers/streamController");
 const router = express.Router();
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -12,5 +12,8 @@ router.post("/create", (req, res, next) => {
   }, upload.single('video'), createStream);
 
 router.get("/user_streams/:userId", getAllStreamByUser)
-
+router.post("/watch_stream", startStream)
+router.get("/status", getStreamStatus);
+router.get("/streamInfo",getStreamInfomation)
+router.get('/sse-stream', sseStream);
 module.exports = router

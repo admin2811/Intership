@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, Camera, Play, AlignJustify, Eye } from "lucide-react";
+import { Search, Camera, Play, AlignJustify, Eye, Pause } from "lucide-react";
 import FormApp from "./FormApp";
 import { useDispatch, useSelector } from "react-redux";
 import { getStreamsByUserThunk } from "../../../redux/application/streamSlice";
-
+import { startStreamThunk } from "../../../redux/application/videoStreamSlice";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import {ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 const AppTable = ({ isDarkMode }) => {
   const dispatch = useDispatch();
   const user = localStorage.getItem("user");
-  const userId = JSON.parse(user)?._id; // Check nếu `user` không tồn tại
+  const userId = JSON.parse(user)?._id;
   const { streams, isLoading } = useSelector((state) => state.stream);
-
   const [addSection, setAddSection] = useState(false);
   const [activeMenuKey, setActiveMenuKey] = useState(null);
-  // Fetch streams khi `userId` hoặc `addSection` thay đổi
-  // Đóng menu `addSection` khi nhấn Escape
+  const [loadingStreamKey, setLoadingStreamKey] = useState(null);
+  const [streamStatus, setStreamStatus] = useState(() => {
+    const savedStatus = localStorage.getItem("streamStatus");
+    return savedStatus ? JSON.parse(savedStatus) : {};
+  });
+  const activeStreams = parseInt(localStorage.getItem("activeStreams") || "0", 10);
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -26,16 +33,81 @@ const AppTable = ({ isDarkMode }) => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
   useEffect(() => {
-    if (userId || addSection){
+    const eventSource = new EventSource("http://localhost:5000/api/streams/sse-stream");
+    eventSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log("Stream status:", data);
+      const updatedStatus = {
+        ...streamStatus,
+        [data.key]: data.isStreaming,
+      };
+      setStreamStatus(updatedStatus);
+      localStorage.setItem("streamStatus", JSON.stringify(updatedStatus));
+      if (data.isStreaming) {
+        localStorage.setItem("activeStreams", activeStreams + 1);
+      } else {
+        localStorage.setItem("activeStreams", Math.max(0, activeStreams - 1));
+      }
+    };
+    return () => {
+      eventSource.close();
+    };
+  }, [streamStatus]);
+  
+  useEffect(() => {
+    if (userId) {
       dispatch(getStreamsByUserThunk(userId));
     }
   }, [userId, dispatch, addSection]);
-  // Hiển thị loading hoặc danh sách streams
-  const handleStream = (stream) => {
-    console.log('Stream key: ', stream.key)
-    console.log('Video Url:' , stream.videoUrl)
+
+  // Handle start or pause stream
+  const handleStreamAction = async (stream, event) => {
+    event.preventDefault();
+    setLoadingStreamKey(stream.key); 
+    const formData = new FormData();
+    formData.append("key", stream.key);
+    formData.append("videoUrl", stream.videoUrl);
+    const action = streamStatus[stream.key] ? "stop" : "start";
+    formData.append("action", action);
+    try {
+      const result = await dispatch(startStreamThunk(formData)).unwrap();
+      if (result.status === "success") {
+        const updatedStatus = {
+          ...streamStatus,
+          [stream.key]: result.isStreaming,
+        };
+        setStreamStatus(updatedStatus);
+        localStorage.setItem("streamStatus", JSON.stringify(updatedStatus));
+        if (result.isStreaming) {
+            localStorage.setItem("activeStreams", activeStreams + 1);
+        } else {
+            localStorage.setItem("activeStreams", Math.max(0, activeStreams - 1));
+        }
+      }
+    } catch (error) {
+      console.error("Error managing stream:", error);
+    } finally {
+      setLoadingStreamKey(null);
+    }
+  };
+  
+  const handleGoToWatchStream = (stream) => {
+   window.open(`/watchStream/${stream.key}`, '_blank');
   }
+  const handleCopyRTMPEndpoint = (key) => {
+    const rtmpEndpoint = `rtmp://localhost:1935/${key}`;
+    navigator.clipboard
+      .writeText(rtmpEndpoint)
+      .then(() => {
+        toast.success(`Copied to clipboard: ${rtmpEndpoint}`);
+      })
+      .catch((err) => {
+        console.error("Failed to copy:", err);
+        toast.error("Failed to copy RTMP Endpoint");
+      });
+  };
   const renderStreamContent = () => {
     if (isLoading) {
       return (
@@ -87,29 +159,44 @@ const AppTable = ({ isDarkMode }) => {
           <td className="px-6 py-4 whitespace-nowrap">
             <span
               className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                stream.status === "online"
+               streamStatus[stream.key]
                   ? "bg-green-800 text-green-100"
                   : "bg-red-800 text-red-100"
               }`}
             >
-              {stream.status || "offline"}
+            {streamStatus[stream.key] ? "Online" : "Offline"}
             </span>
           </td>
           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300 flex gap-3 relative">
-            <button 
-              onClick={() => handleStream(stream)}
-              className="text-indigo-400 hover:text-indigo-300">
-              <Play />
-            </button>
+            <form onSubmit={(event) => handleStreamAction(stream, event)}>
+              <button
+                type="submit"
+                className="text-indigo-400 hover:text-indigo-300"
+              >
+                {loadingStreamKey === stream.key ? ( 
+                  <Box sx={{ display: "flex" }}>
+                    <CircularProgress size={24} />
+                  </Box>
+                ) : streamStatus[stream.key] ? (
+                  <Pause />
+                ) : (
+                  <Play />
+                )}
+              </button>
+            </form>
             <button
               className={`${isDarkMode ? "" : "text-black"}`}
               onClick={() =>
-                setActiveMenuKey(activeMenuKey === stream.key ? null : stream.key)
+                setActiveMenuKey(
+                  activeMenuKey === stream.key ? null : stream.key
+                )
               }
             >
               <AlignJustify />
             </button>
-            <button className="text-green-400 hover:text-green-300">
+            <button className="text-green-400 hover:text-green-300"
+            onClick={() => handleGoToWatchStream(stream)}
+            >
               <Eye />
             </button>
           </td>
@@ -130,7 +217,10 @@ const AppTable = ({ isDarkMode }) => {
                   <li className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
                     Edit RTMP Endpoint
                   </li>
-                  <li className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
+                  <li 
+                      className="py-2 px-4 hover:bg-gray-200 cursor-pointer"
+                      onClick={() => handleCopyRTMPEndpoint(stream.key)}
+                  >
                     Copy config RTMP
                   </li>
                   <li className="py-2 px-4 hover:bg-gray-200 cursor-pointer">
@@ -155,7 +245,6 @@ const AppTable = ({ isDarkMode }) => {
 
   return (
     <div className="relative">
-      {/* Header */}
       <motion.div
         className={`${
           isDarkMode
@@ -203,7 +292,6 @@ const AppTable = ({ isDarkMode }) => {
           </div>
         </div>
 
-        {/* Table */}
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-700">
             <thead>
@@ -229,8 +317,19 @@ const AppTable = ({ isDarkMode }) => {
         </div>
       </motion.div>
 
-      {/* Add Section Form */}
       {addSection && <FormApp isDarkMode={isDarkMode} />}
+      <ToastContainer
+            position="bottom-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="colored"
+          />
     </div>
   );
 };

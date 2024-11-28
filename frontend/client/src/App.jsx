@@ -15,6 +15,7 @@ import UserPage from './pages/DashBoard/pages/UserPage';
 import WebHooksPage from './pages/DashBoard/pages/WebHooksPage';
 import SettingPage from './pages/DashBoard/pages/SettingPage';
 import LogsPage from './pages/DashBoard/pages/LogsPage';
+import WatchStream from './pages/DashBoard/pages/WatchStream';
 const App = () => {
   const { authToken } = useSelector(state => state.auth);
   useEffect(() => {
@@ -53,8 +54,12 @@ const App = () => {
         { path: "users", element: <UserPage />},
         { path: "webhook", element: <WebHooksPage />},
         { path: "setting", element: <SettingPage />},
-        { path: "logs", element : <LogsPage />}
+        { path: "logs", element : <LogsPage />},
       ]
+    },
+    {
+      path: "/watchStream/:key",
+      element: <WatchStream />
     }
   ]);
 

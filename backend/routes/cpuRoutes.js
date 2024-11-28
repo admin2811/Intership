@@ -1,6 +1,6 @@
 const express = require("express");
-const {getCpuLoad } = require("../controllers/cpuController");
+const { getSystemDiskInfo } = require("../controllers/cpuController");
 const router = express.Router();
 
-router.get("/load", getCpuLoad);
+router.get("/load", getSystemDiskInfo);
 module.exports = router;

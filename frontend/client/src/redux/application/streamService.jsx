@@ -9,6 +9,7 @@ export const createStream = async (streamData) => {
         },
     };
     try {
+        console.log(streamData);
         const response = await axios.post(`${API_URL}/create`, streamData, config);
         return response.data; // Trả về toàn bộ dữ liệu từ server
     } catch (error) {
@@ -20,25 +21,7 @@ export const createStream = async (streamData) => {
         }
     }
 };
-
-export const startStream = async (startStreamData) => {
-    const config = {
-        headers: {
-            'Content-Type': 'multipart/form-data',
-        }
-    };
-    try{
-        const response = await axios.post(`${API_URL}/watch_stream`, startStreamData, config)
-        return response.data
-    }catch(error){
-        if (error.response && error.response.data) {
-            throw new Error(error.response.data.message || 'An error occurred');
-        } else {
-            throw new Error('Unable to connect to the server');
-        }
-    }
-}
-
+  
 export const getStreamsByUser = async (userId) => { 
     try {
         const response = await axios.get(`${API_URL}/user_streams/${userId}`);
@@ -52,11 +35,22 @@ export const getStreamsByUser = async (userId) => {
     }
 }
 
-
+export const getStreamInfo = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/streamInfo`);
+        return response.data;
+    } catch (error) {
+        if (error.response?.data) {
+            throw new Error(error.response.data.message || 'An error occurred');
+        } else {
+            throw new Error('Unable to connect to the server');
+        }
+    }
+}
 
 const streamService = {
     createStream,
     getStreamsByUser,
-    startStream
+    getStreamInfo
 };
 export default streamService;

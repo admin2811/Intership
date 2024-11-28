@@ -39,7 +39,7 @@ const ChartCard = ({ name, icon: Icon, value, color, isDarkMode, percentage }) =
             {name}
         </span>
         <p className={`mt-6 text-3xl font-semibold ${isDarkMode ? 'text-gray-100' : 'text-black'}`}>
-          {value}/{value}
+          {value}
         </p>
     </div>
     <div style={{ width: '100%', height: 'auto', maxWidth: 200, maxHeight: 200 }} className='p-10'>

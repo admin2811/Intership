@@ -12,6 +12,9 @@
     "coverage": "jest --coverage"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.5",
+    "@emotion/styled": "^11.13.5",
+    "@mui/material": "^6.1.8",
     "@reduxjs/toolkit": "^2.2.7",
     "axios": "^1.7.7",
     "boxicons": "^2.1.4",
@@ -19,7 +22,9 @@
     "d3-ease": "^3.0.1",
     "express": "^4.21.1",
     "flowbite-react": "^0.10.1",
+    "flv.js": "^1.6.2",
     "framer-motion": "^11.6.0",
+    "hls.js": "^1.5.17",
     "jest-transform-stub": "^2.0.0",
     "lucide-react": "^0.446.0",
     "react": "^18.3.1",
