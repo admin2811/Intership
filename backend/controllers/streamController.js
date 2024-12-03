@@ -1,6 +1,7 @@
 const Stream = require('../models/Stream');
 const cloudinary = require('../config/cloudinary');
 const axios = require('axios');
+const http = require('http');
 const { XMLParser } = require('fast-xml-parser');
 const mongoose = require('mongoose');
 const ffmpegPath = require("@ffmpeg-installer/ffmpeg").path;
@@ -45,6 +46,8 @@ exports.createStream = async (req, res) => {
   }
 };
 
+
+
 exports.getAllStreamByUser = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -54,7 +57,7 @@ exports.getAllStreamByUser = async (req, res) => {
     const objectId = new mongoose.Types.ObjectId(userId.trim());
     const streams = await Stream.find({ userId: objectId });
     if (streams.length === 0) {
-      return res.status(404).json({ message: 'No streams found for this user.' });
+      return res.status(400).json({ message: 'No streams found for this user.' });
     }
     return res.status(200).json({ data: streams });
   } catch (error) {
@@ -93,7 +96,7 @@ exports.startStream = async (req, res) => {
         activeStreams[key].kill('SIGKILL');
         delete activeStreams[key];
         clients.forEach(client => {
-          const message = { message: `Stream ${key} ended.` };  // Đóng gói trong đối tượng JSON
+          const message = { message: `Stream ${key} ended.` };
           client.write(`data: ${JSON.stringify(message)}\n\n`);
         })
         return res.status(200).json({
@@ -170,13 +173,37 @@ exports.startStream = async (req, res) => {
     }
   }
 };
-
-
+exports.createLive = async (req,res) => {
+  try{
+    console.log("File received:", req.file);
+    console.log("Request body:", req.body); 
+    const { userId, name, key } = req.body;
+    if (!userId || !key || !name) {
+      return res.status(400).json({ message: "Missing required fields (userId, key)." });
+    }
+    const existingStream = await Stream.findOne({ userId, key });
+    if (existingStream) {
+      return res.status(400).json({ message: "Stream key already exists." });
+    }
+    const stream = new Stream({
+      userId: req.body.userId,
+      name: req.body.name || "Untitled Stream",
+      key: req.body.key,
+      videoUrl: "",
+      typeLive: "live",
+    });
+    await stream.save();
+    res.status(200).json({ message: "Stream created successfully"});
+  }catch(error){
+    console.error("Error creating stream: ", error);
+    res.status(500).json({ error: "Internal server error"});
+  }
+}
 exports.sseStream = (req, res) => {
   res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader('Cache-Control', 'no-cache');
   res.setHeader('Connection', 'keep-alive');
-  res.flushHeaders();
+  res.flushHeaders();     
   clients.push(res);
   req.on('close', () => {
     clients = clients.filter(client => client !== res);
@@ -250,10 +277,10 @@ async function getStreamInfo() {
         nclients: stream.nclients || 0,
         bytesIn: stream.bytes_in || 0,
         bytesOut: stream.bytes_out || 0,
-        bwIn: bwIn, // Giá trị đã chuyển đổi
-        bwOut: bwOut, // Giá trị đã chuyển đổi
-        bwAudio: bwAudio, // Giá trị đã chuyển đổi
-        bwVideo: bwVideo, // Giá trị đã chuyển đổi
+        bwIn: bwIn, 
+        bwOut: bwOut, 
+        bwAudio: bwAudio, 
+        bwVideo: bwVideo, 
         clients: Array.isArray(stream.client)
           ? stream.client.map((client) => ({
               clientId: client.id || null,
@@ -301,7 +328,6 @@ async function getStreamInfo() {
     return { status: 'error', message: 'Failed to fetch stream info' };
   }
 }
-
 function getAudioMetadata(videoUrl) {
   return new Promise((resolve, reject) => {
     ffmpeg(videoUrl).ffprobe((err, data) => {
@@ -323,3 +349,5 @@ function getAudioMetadata(videoUrl) {
     });
   });
 }
+
+//Start Stream 

@@ -33,18 +33,16 @@ const FormApp = ({ isDarkMode, rest }) => {
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
-    setLoading(true); // Bắt đầu loading
-
+    setLoading(true);
     const formData = new FormData();
     formData.append('video', selectedFile);
     formData.append('key', streamKey);
     formData.append('userId', userId);
     formData.append('name', streamName);
-
+    formData.append('typeLive', 'media source');
     await dispatch(createStreamThunk(formData));
-    setLoading(false); // Dừng loading sau khi gửi dữ liệu xong
+    setLoading(false);
   };
-
   useEffect(() => {
     if (isSuccess) {
       toast.success('Stream created successfully!');
@@ -58,6 +56,7 @@ const FormApp = ({ isDarkMode, rest }) => {
     }
     dispatch(reset());
   }, [isSuccess, isError, message]);
+
   return (  
     <div>
       <div className="fixed inset-0 bg-black opacity-50 z-10"></div>

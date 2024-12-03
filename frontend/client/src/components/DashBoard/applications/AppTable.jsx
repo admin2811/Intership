@@ -9,6 +9,8 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import {ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import FormLive from "./FormLive";
+import { useWebSocket } from "../common/useWebSocket";
 const AppTable = ({ isDarkMode }) => {
   const dispatch = useDispatch();
   const user = localStorage.getItem("user");
@@ -17,15 +19,59 @@ const AppTable = ({ isDarkMode }) => {
   const [addSection, setAddSection] = useState(false);
   const [activeMenuKey, setActiveMenuKey] = useState(null);
   const [loadingStreamKey, setLoadingStreamKey] = useState(null);
+  const [live, setLive] = useState(false);
   const [streamStatus, setStreamStatus] = useState(() => {
     const savedStatus = localStorage.getItem("streamStatus");
     return savedStatus ? JSON.parse(savedStatus) : {};
   });
   const activeStreams = parseInt(localStorage.getItem("activeStreams") || "0", 10);
+  const socket = useWebSocket("ws://localhost:3000");
+  useEffect(() => {
+    if (streams?.length > 0 && socket?.readyState === WebSocket.OPEN) {
+      const streamKeys = streams.map((stream) => stream.key);
+      const message = {
+        type: "sync-stream-keys",
+        streamKeys,
+      };
+      socket.send(JSON.stringify(message));
+      console.log("Sent stream keys:", streamKeys);
+    }
+  }, [streams, socket]);
+  useEffect(() => {
+    if (userId) {
+      dispatch(getStreamsByUserThunk(userId));
+    }
+  }, [userId, dispatch, addSection,live]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.onmessage = (event) => {
+        const data = JSON.parse(event.data);
+        if (data.isStreaming === true) {
+          console.log(`🔵 ${data.message}`);
+          console.log(data.key)
+          const updatedStatus = {
+            ...streamStatus,
+            [data.key]: data.isStreaming,
+          }
+          setStreamStatus(updatedStatus);
+        } else if (data.isStreaming === false) {
+          const updatedStatus = {
+            ...streamStatus,
+            [data.key]: data.isStreaming,
+          }
+          setStreamStatus(updatedStatus);
+          console.log(`🔴 ${data.message}`);
+        }
+      };
+    }
+  }, [socket]);
+  
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
-        setAddSection(false);
+        setAddSection(false); 
+        setLive(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
@@ -36,31 +82,42 @@ const AppTable = ({ isDarkMode }) => {
 
   useEffect(() => {
     const eventSource = new EventSource("http://localhost:5000/api/streams/sse-stream");
+  
+    // Cờ để theo dõi trạng thái của stream đã xử lý
+    let hasReceivedResponse = false;
+  
     eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log("Stream status:", data);
-      const updatedStatus = {
-        ...streamStatus,
-        [data.key]: data.isStreaming,
-      };
-      setStreamStatus(updatedStatus);
-      localStorage.setItem("streamStatus", JSON.stringify(updatedStatus));
-      if (data.isStreaming) {
-        localStorage.setItem("activeStreams", activeStreams + 1);
-      } else {
-        localStorage.setItem("activeStreams", Math.max(0, activeStreams - 1));
+      if (!hasReceivedResponse) { // Chỉ xử lý phản hồi nếu chưa xử lý trước đó
+        const data = JSON.parse(event.data);
+        console.log("Stream status:", data);
+  
+        const updatedStatus = {
+          ...streamStatus,
+          [data.key]: data.isStreaming,
+        };
+  
+        setStreamStatus(updatedStatus);
+        localStorage.setItem("streamStatus", JSON.stringify(updatedStatus));
+  
+        if (data.isStreaming) {
+          localStorage.setItem("activeStreams", activeStreams + 1);
+        } else {
+          localStorage.setItem("activeStreams", Math.max(0, activeStreams - 1));
+        }
+  
+        hasReceivedResponse = true; // Đánh dấu là đã nhận phản hồi
+        eventSource.close(); // Đóng kết nối sau khi xử lý xong
       }
     };
     return () => {
       eventSource.close();
     };
   }, [streamStatus]);
-  
+
+  // Load streams khi component mount
   useEffect(() => {
-    if (userId) {
-      dispatch(getStreamsByUserThunk(userId));
-    }
-  }, [userId, dispatch, addSection]);
+    dispatch({ type: "FETCH_STREAMS" }); // Thunk hoặc action để lấy danh sách streams
+  }, [dispatch]);
 
   // Handle start or pause stream
   const handleStreamAction = async (stream, event) => {
@@ -96,8 +153,9 @@ const AppTable = ({ isDarkMode }) => {
   const handleGoToWatchStream = (stream) => {
    window.open(`/watchStream/${stream.key}`, '_blank');
   }
+
   const handleCopyRTMPEndpoint = (key) => {
-    const rtmpEndpoint = `rtmp://localhost:1935/${key}`;
+    const rtmpEndpoint = `rtmp://localhost:1935/live/${key}`;
     navigator.clipboard
       .writeText(rtmpEndpoint)
       .then(() => {
@@ -108,6 +166,7 @@ const AppTable = ({ isDarkMode }) => {
         toast.error("Failed to copy RTMP Endpoint");
       });
   };
+
   const renderStreamContent = () => {
     if (isLoading) {
       return (
@@ -172,6 +231,7 @@ const AppTable = ({ isDarkMode }) => {
               <button
                 type="submit"
                 className="text-indigo-400 hover:text-indigo-300"
+                disabled={stream.typeLive === "live"}
               >
                 {loadingStreamKey === stream.key ? ( 
                   <Box sx={{ display: "flex" }}>
@@ -284,10 +344,16 @@ const AppTable = ({ isDarkMode }) => {
               size={18}
             />
             <button
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-5"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
               onClick={() => setAddSection(true)}
             >
               Add +
+            </button>
+            <button
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+              onClick={() => setLive(true)}
+            >
+                Live
             </button>
           </div>
         </div>
@@ -318,6 +384,7 @@ const AppTable = ({ isDarkMode }) => {
       </motion.div>
 
       {addSection && <FormApp isDarkMode={isDarkMode} />}
+      {live && <FormLive isDarkMode={isDarkMode}/>}
       <ToastContainer
             position="bottom-right"
             autoClose={3000}

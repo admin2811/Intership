@@ -14,9 +14,11 @@ const StreamSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  typeLive: {
+    type: String,
+  },
   videoUrl: {
     type: String,
-    required: true 
   }, 
   createdAt: { type: Date, default: Date.now },
 },{

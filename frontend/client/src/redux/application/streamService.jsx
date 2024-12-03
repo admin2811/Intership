@@ -21,6 +21,25 @@ export const createStream = async (streamData) => {
         }
     }
 };
+
+export const createLive = async (streamData) => {
+    const config = {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    };
+    try {
+        console.log(streamData);
+        const response = await axios.post(`${API_URL}/create_live`, streamData, config);
+        return response.data; 
+    } catch (error) {
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data.message || 'An error occurred');
+        } else {
+            throw new Error('Unable to connect to the server');
+        }
+    }
+}
   
 export const getStreamsByUser = async (userId) => { 
     try {
@@ -51,6 +70,7 @@ export const getStreamInfo = async () => {
 const streamService = {
     createStream,
     getStreamsByUser,
-    getStreamInfo
+    getStreamInfo,
+    createLive
 };
 export default streamService;

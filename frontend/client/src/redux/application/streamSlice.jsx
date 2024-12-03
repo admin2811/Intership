@@ -24,6 +24,19 @@ export const createStreamThunk = createAsyncThunk(
     }
 );
 
+//Thunk để tạo stream live
+export const createLiveStreamThunk = createAsyncThunk(
+    'stream/createLiveStream',
+    async (formData, thunkAPI) => {
+        try{
+            const response = await streamService.createLive(formData, thunkAPI);
+            return response;
+        }catch(error){
+            return thunkAPI.rejectWithValue(error.response ? error.response.data.message : error.message);
+        }
+    }
+)
+
 // Thunk để lấy streams theo user
 export const getStreamsByUserThunk = createAsyncThunk(
     'stream/getStreamsByUser',
@@ -112,6 +125,21 @@ const streamSlice = createSlice({
                 state.isError = true;
                 state.message = action.payload || action.error.message;
             });
+        builder
+            .addCase(createLiveStreamThunk.pending, (state) => {
+                state.isLoading = true;
+            })
+            .addCase(createLiveStreamThunk.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.isError = false;
+                state.streams = action.payload.data || [];
+                state.message = action.payload.message;
+            })
+            .addCase(createLiveStreamThunk.rejected, (state, action) => {
+                state.isLoading = false;
+                state.isError = true;
+                state.message = action.payload || action.error.message;
+            })
     },
 });
 
